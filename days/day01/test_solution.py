@@ -45,6 +45,7 @@ def test_find_number_2():
 
 
 def test_find_number_backwards_2():
+    assert SolveDay01x2().find_number("2zhlnthseven8one", True) == '1'
     assert SolveDay01x2().find_number("two1nine", True) == '9'
     assert SolveDay01x2().find_number("eightwothree", True) == '3'
     assert SolveDay01x2().find_number("abcone2threexyz", True) == '3'

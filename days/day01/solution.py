@@ -8,7 +8,8 @@ class SolveDay01x1(SolveDay):
         return sum(self.get_line_value(x) for x in self.get_lines(text_input))
 
     def get_line_value(self, line: str) -> int:
-        return int(self.find_number(line) + self.find_number(line, True))
+        r = self.find_number(line) + self.find_number(line, True)
+        return int(r)
 
     def find_number(self, line: str, backwards=False) -> str:
         step = backwards and -1 or 1
@@ -21,21 +22,52 @@ class SolveDay01x1(SolveDay):
                 return str(c)
             ix += step
 
-        return '0'
+        return ''
 
 
 class SolveDay01x2(SolveDay01x1):
     NAMES = ('one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine')
     SUBS = {}
+    BB = {}
+    EE = {}
 
-    def __init__(self):
-        self.SUBS = {self.NAMES[ix]: self.NAMES[ix][0] + str(ix + 1) + self.NAMES[ix][-1] for ix in range(len(self.NAMES))}
+    def __init__(self, verbose=False):
+        super().__init__(verbose)
+
+        for ix in range(len(self.NAMES)):
+            name = self.NAMES[ix]
+            value = str(ix + 1)
+            self.SUBS[name] = value
+
+            first, last = name[0], name[-1]
+
+            if first not in self.BB:
+                self.BB[first] = []
+
+            self.BB[first].append(name)
+
+            if last not in self.EE:
+                self.EE[last] = []
+
+            self.EE[last].append(name)
 
     def find_number(self, line: str, backwards=False) -> str:
-        return super().find_number(self.preprocess_line(line), backwards)
+        step = backwards and -1 or 1
 
-    def preprocess_line(self, line: str) -> str:
-        out = line
-        for x in self.SUBS:
-            out = self.SUBS[x].join(out.split(x))
-        return out
+        ix = backwards and -1 or 0
+        cc = backwards and self.EE or self.BB
+
+        size = len(line)
+        for _ in range(size):
+            c = line[ix]
+            if c in self.NUMBERS:
+                return str(c)
+            if c in cc:
+                for name in cc[c]:
+                    jy = ix + step * len(name)
+                    m, n = ix > jy and (size + jy + 1, size + ix + 1) or (ix, jy)
+                    if line[m:n] == name:
+                        return self.SUBS[name]
+            ix += step
+
+        return ''

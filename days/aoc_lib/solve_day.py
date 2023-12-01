@@ -1,6 +1,9 @@
 class SolveDay:
     ignore_empty_lines = True
 
+    def __init__(self, verbose=False):
+        self.verbose = verbose
+
     def solve(self, text_input: str) -> int:
         raise 'not implemented'
 
