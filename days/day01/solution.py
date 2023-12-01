@@ -25,5 +25,26 @@ class SolveDay01x1(SolveDay):
 
 
 class SolveDay01x2(SolveDay01x1):
+    # bb: efnost
+    # ee: enortx
+    # cc: enot
+    SUBS = {
+        'one': 'o1e',
+        'two': 't2o',
+        'three': 't3e',
+        'four': '4',
+        'five': '5e',
+        'six': '6',
+        'seven': '7n',
+        'eight': 'e8t',
+        'nine': 'n9e',
+    }
+
     def find_number(self, line: str, backwards=False) -> str:
-        return '0'
+        return super().find_number(self.preprocess_line(line), backwards)
+
+    def preprocess_line(self, line: str) -> str:
+        out = line
+        for x in self.SUBS:
+            out = self.SUBS[x].join(out.split(x))
+        return out
