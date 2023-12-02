@@ -1,11 +1,14 @@
+#!/Users/palutser/projects/aoc2023/venv/bin/python
+
 from os import path
 
-from days import SolveDay01x1, SolveDay01x2
+from days import SolveDay01x1, SolveDay01x2, SolveDay02x1, SolveDay02x2
 
-DEFAULT_DAY = 1
+DEFAULT_DAY = 2
 variable = ''
 solutions = {
-    1: [SolveDay01x1, SolveDay01x2]
+    1: [SolveDay01x1, SolveDay01x2],
+    2: [SolveDay02x1, SolveDay02x2]
 }
 
 
