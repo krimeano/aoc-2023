@@ -19,6 +19,8 @@ if last_day >= 25:
     print('MERRY XMAS!')
     exit()
 
+last_day_str = '{:02d}'.format(last_day)
+
 new_day = last_day + 1
 new_day_str = '{:02d}'.format(new_day)
 new_folder = 'day{0}'.format(new_day_str)
@@ -52,3 +54,17 @@ with open('solution_test.py', 'w') as f:
         '\n    assert SolveDay{0}x2(True).solve(text_input) == 0'.format(new_day_str),
     ])
 os.chdir(cwd)
+
+main_content = []
+with open('solve.py', 'r') as f:
+    for x in f.readlines():
+        if x.startswith('DEFAULT_DAY'):
+            x = 'DEFAULT_DAY = {0}\n'.format(new_day)
+        if x.startswith('from days.day{0}.solution import SolveDay{0}x1, SolveDay{0}x2\n'.format(last_day_str)):
+            x += 'from days.day{0}.solution import SolveDay{0}x1, SolveDay{0}x2\n'.format(new_day_str)
+        if x == '    {0}: [SolveDay{1}x1, SolveDay{1}x2],\n'.format(last_day, last_day_str):
+            x += '    {0}: [SolveDay{1}x1, SolveDay{1}x2],\n'.format(new_day, new_day_str)
+        main_content.append(x)
+
+with open('solve.py', 'w') as f:
+    f.writelines(main_content)
