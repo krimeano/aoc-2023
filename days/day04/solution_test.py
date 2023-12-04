@@ -14,4 +14,4 @@ def test_solution_1():
 
 
 def test_solution_2():
-    assert SolveDay04x2(True).solve(text_input) == 0
+    assert SolveDay04x2(True).solve(text_input) == 30
