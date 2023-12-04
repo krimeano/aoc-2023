@@ -7,5 +7,5 @@ class SolveDay:
     def solve(self, text_input: str) -> int:
         raise 'not implemented'
 
-    def get_lines(self, text_input):
+    def get_lines(self, text_input) -> list[str]:
         return [y for y in [x.strip() for x in text_input.split('\n')] if len(y) > 0 or not self.ignore_empty_lines]

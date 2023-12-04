@@ -5,13 +5,15 @@ from time import time
 from days.day01.solution import SolveDay01x1, SolveDay01x2
 from days.day02.solution import SolveDay02x1, SolveDay02x2
 from days.day03.solution import SolveDay03x1, SolveDay03x2
+from days.day04.solution import SolveDay04x1, SolveDay04x2
 
-DEFAULT_DAY = 3
+DEFAULT_DAY = 4
 variable = ''
 solutions = {
     1: [SolveDay01x1, SolveDay01x2],
     2: [SolveDay02x1, SolveDay02x2],
     3: [SolveDay03x1, SolveDay03x2],
+    4: [SolveDay04x1, SolveDay04x2],
 }
 
 
