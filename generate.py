@@ -13,7 +13,7 @@ os.chdir(root)
 
 contents = [x for x in os.listdir('.') if x.startswith('day')]
 
-last_day = max(int(x.startswith('day0') and x[4:] or x[3:]) for x in contents)
+last_day = max(int(x.startswith('day0') and x[4:] or x[3:]) for x in contents) or 0
 
 if last_day >= 25:
     print('MERRY XMAS!')
