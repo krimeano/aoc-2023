@@ -90,7 +90,7 @@ class SolveDay05x1(SolveDay):
         self.parse_data(self.get_lines(text_input))
         self.postprocess_maps()
 
-        if self.verbose and False:
+        if self.verbose:
             print(self.seeds)
             for t in self.trees:
                 print(t)
@@ -118,10 +118,8 @@ class SolveDay05x1(SolveDay):
 
     def postprocess_maps(self):
         self.trees = []
-        self.unified_map = []
         for xx in self.maps:
-            self.unified_map = unify_maps(self.unified_map, xx)
-        self.trees.append(sorted_to_tree(sorted(self.unified_map, key=lambda x: x[1]), []))
+            self.trees.append(sorted_to_tree(sorted(xx, key=lambda x: x[1]), []))
 
     def find_locations(self):
         self.locations = [self.process_seed(seed) for seed in self.seeds]
@@ -142,5 +140,52 @@ class SolveDay05x1(SolveDay):
 
 
 class SolveDay05x2(SolveDay05x1):
-    def solve(self, text_input: str) -> int:
-        return 0
+    def postprocess_maps(self):
+        self.trees = []
+        self.unified_map = []
+        for xx in self.maps:
+            self.unified_map = unify_maps(self.unified_map, xx)
+        self.trees.append(sorted_to_tree(sorted(self.unified_map, key=lambda x: x[1]), []))
+
+    def find_locations(self):
+        if self.verbose:
+            print('seeds = ', self.seeds)
+        seed_segments: list[Segment] = []
+        for ix in range(0, len(self.seeds), 2):
+            seed_segments.append((self.seeds[ix], self.seeds[ix] + self.seeds[ix + 1]))
+        if self.verbose:
+            print('seed_segments', seed_segments)
+        loc_segments = map_to_segments(sorted(self.unified_map), 1)
+        if self.verbose:
+            print(loc_segments)
+        for (x0, x1) in loc_segments:
+            found = []
+            for (y0, y1) in seed_segments:
+                if x0 < y1 < x1:
+                    z0 = y0 > x0 and y0 or x0
+                    if self.verbose:
+                        print('found', (z0, y1), 'at', (x0, x1), 'and', (y0, y1))
+                    found.append((z0, y1))
+                elif x0 < y0 < x1:
+                    z1 = y1 < x1 and y1 or x1
+                    if self.verbose:
+                        print('found', (y0, z1), 'at', (x0, x1), 'and', (y0, y1))
+                    found.append((y0, z1))
+                elif y0 < x0 < y1:
+                    z1 = x1 < y1 and x1 or y1
+                    if self.verbose:
+                        print('found', (x0, z1), 'at', (x0, x1), 'and', (y0, y1))
+                    found.append((x0, z1))
+                elif y0 < x1 < y1:
+                    z0 = x0 > y0 and x0 or y0
+                    if self.verbose:
+                        print('found', (z0, x1), 'at', (x0, x1), 'and', (y0, y1))
+                    found.append((z0, x1))
+
+            if found:
+                seed = sorted(found).pop(0)[0]
+                if self.verbose:
+                    print('found:', found, seed)
+                self.locations = [self.process_seed(seed)]
+                return
+        self.locations = [0]
