@@ -7,8 +7,9 @@ from days.day02.solution import SolveDay02x1, SolveDay02x2
 from days.day03.solution import SolveDay03x1, SolveDay03x2
 from days.day04.solution import SolveDay04x1, SolveDay04x2
 from days.day05.solution import SolveDay05x1, SolveDay05x2
+from days.day07.solution import SolveDay07x1, SolveDay07x2
 
-DEFAULT_DAY = 5
+DEFAULT_DAY = 7
 variable = ''
 solutions = {
     1: [SolveDay01x1, SolveDay01x2],
@@ -16,6 +17,7 @@ solutions = {
     3: [SolveDay03x1, SolveDay03x2],
     4: [SolveDay04x1, SolveDay04x2],
     5: [SolveDay05x1, SolveDay05x2],
+    7: [SolveDay07x1, SolveDay07x2],
 }
 
 
