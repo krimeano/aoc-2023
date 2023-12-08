@@ -1,8 +1,5 @@
 from .solution import SolveDay08x1, SolveDay08x2
 
-text_input = """
-"""
-
 
 def test_solution_1():
     assert SolveDay08x1(True).solve("""
@@ -27,4 +24,15 @@ ZZZ = (ZZZ, ZZZ)
 
 
 def test_solution_2():
-    assert SolveDay08x2(True).solve(text_input) == 0
+    assert SolveDay08x2(True).solve("""
+LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)
+""") == 6

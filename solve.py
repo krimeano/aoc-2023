@@ -30,6 +30,7 @@ def read_input(d: int) -> str:
 
 
 if __name__ == '__main__':
+    verbose = False
     while True:
         print()
         print('Enter "q" to quit')
@@ -39,6 +40,11 @@ if __name__ == '__main__':
 
         if user_input == 'q':
             exit(0)
+
+        if user_input == 'v':
+            verbose = not verbose
+            print('toggle verbose -> ', verbose)
+            continue
 
         try:
             day = user_input and int(user_input) or DEFAULT_DAY
@@ -54,7 +60,7 @@ if __name__ == '__main__':
             variant = 0
             for S in solutions[day]:
                 variant += 1
-                result = S().solve(read_input(day))
+                result = S(verbose).solve(read_input(day))
                 print('Day %d Solution %d: %d' % (day, variant, result))
 
             elapsed_time = time() - started_at
