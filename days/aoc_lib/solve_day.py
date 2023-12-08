@@ -3,6 +3,8 @@ class SolveDay:
 
     def __init__(self, verbose=False):
         self.verbose = verbose
+        if self.verbose:
+            print()
 
     def solve(self, text_input: str) -> int:
         raise 'not implemented'
