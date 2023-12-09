@@ -1,13 +1,11 @@
 class Progression:
     def __init__(self, sequence: list[int]):
         self.sequence = sequence
-        xxx: list[list[int]] = []
+        self.hypersequence: list[list[int]] = []
         xx = sequence
         while [x for x in xx if x] and len(xx) > 1:
-            xxx.append(xx)
+            self.hypersequence.insert(0, xx)
             xx = [xx[ix] - xx[ix - 1] for ix in range(1, len(xx))]
-        self.hypersequence = xxx[::-1]
-        self.cds: list[int] = [xx[0] for xx in xxx]
 
     def next(self) -> int:
         d = 0
