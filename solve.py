@@ -9,8 +9,9 @@ from days.day04.solution import SolveDay04x1, SolveDay04x2
 from days.day05.solution import SolveDay05x1, SolveDay05x2
 from days.day07.solution import SolveDay07x1, SolveDay07x2
 from days.day08.solution import SolveDay08x1, SolveDay08x2
+from days.day09.solution import SolveDay09x1, SolveDay09x2
 
-DEFAULT_DAY = 8
+DEFAULT_DAY = 9
 variable = ''
 solutions = {
     1: [SolveDay01x1, SolveDay01x2],
@@ -20,6 +21,7 @@ solutions = {
     5: [SolveDay05x1, SolveDay05x2],
     7: [SolveDay07x1, SolveDay07x2],
     8: [SolveDay08x1, SolveDay08x2],
+    9: [SolveDay09x1, SolveDay09x2],
 }
 
 
@@ -31,6 +33,7 @@ def read_input(d: int) -> str:
 
 if __name__ == '__main__':
     verbose = False
+    first_cycle = True
     while True:
         print()
         print('Enter "q" to quit')
