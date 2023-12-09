@@ -1,6 +1,5 @@
 class Progression:
     def __init__(self, sequence: list[int]):
-        self.sequence = sequence
         self.hypersequence: list[list[int]] = []
         xx = sequence
         while [x for x in xx if x] and len(xx) > 1:
