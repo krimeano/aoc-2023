@@ -10,13 +10,11 @@ class Progression:
     def next(self) -> int:
         d = 0
         for xx in self.hypersequence:
-            xx.append(xx[-1] + d)
-            d = xx[-1]
+            d += xx[-1]
         return d
 
     def prev(self) -> int:
         d = 0
         for xx in self.hypersequence:
-            xx.insert(0, xx[0] - d)
-            d = xx[0]
+            d = xx[0] - d
         return d
