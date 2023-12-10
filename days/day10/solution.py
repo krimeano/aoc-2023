@@ -52,18 +52,22 @@ class SolveDay10x1(SolveDay):
     height: int
     width: int
     s: tuple[int, int]
+    loop: list[tuple[int, int]]
 
     def solve(self, text_input: str) -> int:
+        self.parse_input(text_input)
+        if self.verbose:
+            print(self.loop)
+        return len(self.loop) // 2
+
+    def parse_input(self, text_input: str):
         if self.verbose:
             print(text_input)
         self.pipes = self.get_lines(text_input)
         self.height = len(self.pipes)
         self.width = len(self.pipes[0])
         self.s = self.find_s()
-        loop = self.find_loop()
-        if self.verbose:
-            print(loop)
-        return len(loop) // 2
+        self.loop = self.find_loop()
 
     def find_s(self) -> tuple[int, int]:
         for iy in range(len(self.pipes)):
@@ -94,4 +98,32 @@ class SolveDay10x1(SolveDay):
 
 class SolveDay10x2(SolveDay10x1):
     def solve(self, text_input: str) -> int:
-        return 0
+        self.parse_input(text_input)
+        if self.verbose:
+            print(sorted(self.loop))
+        loop_items = {}
+        rows: list[list[int]] = []
+
+        for _ in range(self.height):
+            rows.append([])
+
+        for iy, jx in sorted(self.loop):
+            pipe = PIPES[self.pipes[iy][jx]]
+            loop_items[(iy, jx)] = pipe
+            if pipe & Side.N:
+                rows[iy].append(jx)
+        if self.verbose:
+            print(rows)
+
+        surrounded: list[tuple[int, int]] = []
+
+        for iy in range(self.height):
+            for jx in range(self.width):
+                if (iy, jx) in loop_items:
+                    continue
+                crosses = sum(1 for z in rows[iy] if z < jx)
+                if crosses % 2:
+                    surrounded.append((iy, jx))
+        if self.verbose:
+            print('surrounded =',surrounded)
+        return len(surrounded)
