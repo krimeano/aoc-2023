@@ -2,12 +2,13 @@ from days import SolveDay
 
 
 class SolveDay12x1(SolveDay):
+    repetitions = 1
 
     def solve(self, text_input: str) -> int:
         total = 0
         for line in self.get_lines(text_input):
             [profile, str_items] = line.split(' ')
-            total += ways_to_fit(profile, [int(x) for x in str_items.split(',')])
+            total += ways_to_fit('?'.join([profile] * self.repetitions), [int(x) for x in str_items.split(',')] * self.repetitions)
         if self.verbose:
             for x in sorted(cached_fit):
                 print('can_fit', x, cached_fit[x])
@@ -15,9 +16,7 @@ class SolveDay12x1(SolveDay):
 
 
 class SolveDay12x2(SolveDay12x1):
-
-    def solve(self, text_input: str) -> int:
-        return 0
+    repetitions = 5
 
 
 cached_ways: dict[tuple[str, str]: int] = {}
