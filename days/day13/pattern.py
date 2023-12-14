@@ -13,8 +13,8 @@ class Pattern:
 
         for iy in range(self.height):
             for jx in range(self.width):
-                self.rows[iy] <<= 2
-                self.cols[jx] <<= 2
+                self.rows[iy] <<= 1
+                self.cols[jx] <<= 1
                 if self.lines[iy][jx] == '#':
                     self.rows[iy] += 1
                     self.cols[jx] += 1
@@ -61,12 +61,12 @@ class Pattern:
 class PatternSmudged(Pattern):
     def __init__(self, lines: list[str], verbose=False):
         super().__init__(lines, verbose)
-        self.smudges = set([2 ** (ix * 2) for ix in range(max(self.height, self.width))])
+        self.smudges = set([2 ** ix for ix in range(max(self.height, self.width))])
         if self.verbose:
             print(self.smudges)
 
     def find_possible_mirrors(self, xx: list[int]) -> list[int]:
-        possible = [(ix, abs(xx[ix - 1] - xx[ix])) for ix in range(1, len(xx)) if abs(xx[ix - 1] - xx[ix]) in self.smudges or xx[ix - 1] == xx[ix]]
+        possible = [(ix, abs(xx[ix - 1] - xx[ix])) for ix in range(1, len(xx)) if (xx[ix - 1] ^ xx[ix]) in self.smudges or xx[ix - 1] == xx[ix]]
         if self.verbose:
             print('possible mirrors:', xx, possible)
         return [x[0] for x in possible]
