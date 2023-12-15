@@ -15,8 +15,9 @@ from days.day11.solution import SolveDay11x1, SolveDay11x2
 from days.day12.solution import SolveDay12x1, SolveDay12x2
 from days.day13.solution import SolveDay13x1, SolveDay13x2
 from days.day14.solution import SolveDay14x1, SolveDay14x2
+from days.day15.solution import SolveDay15x1, SolveDay15x2
 
-DEFAULT_DAY = 14
+DEFAULT_DAY = 15
 variable = ''
 solutions = {
     1: [SolveDay01x1, SolveDay01x2],
@@ -32,6 +33,7 @@ solutions = {
     12: [SolveDay12x1, SolveDay12x2],
     13: [SolveDay13x1, SolveDay13x2],
     14: [SolveDay14x1, SolveDay14x2],
+    15: [SolveDay15x1, SolveDay15x2],
 }
 
 
