@@ -127,7 +127,7 @@ class SolveDay14x2(SolveDay14x1x2):
         self.cycles += 1
         self.tilt().turn().tilt().turn().tilt().turn().tilt().turn()
         if self.verbose:
-            print('after clycle {0}:'.format(self.cycles), self.count(), str(self))
+            print('after cycle {0}:'.format(self.cycles), self.count(), str(self))
 
     def turn(self):
         self.rocks = turn_items(self.rocks)
