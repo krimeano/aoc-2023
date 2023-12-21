@@ -1,4 +1,5 @@
 from .solution import SolveDay17x1, SolveDay17x2
+
 text_input = """
 2413432311323
 3215453535623
@@ -21,4 +22,4 @@ def test_solution_1():
 
 
 def test_solution_2():
-    assert SolveDay17x2(True).solve(text_input) == 0
+    assert SolveDay17x2(True).solve(text_input) == 94
