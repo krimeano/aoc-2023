@@ -21,8 +21,8 @@ hdj{m>838:A,pv}
 
 
 def test_solution_1():
-    assert SolveDay19x1(True).solve(text_input) == 19114
+    assert SolveDay19x1(False).solve(text_input) == 19114
 
 
 def test_solution_2():
-    assert SolveDay19x2(True).solve(text_input) == 0
+    assert SolveDay19x2(True).solve(text_input) == 167409079868000
