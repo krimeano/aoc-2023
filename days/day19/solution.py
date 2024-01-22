@@ -138,63 +138,79 @@ class SolveDay19x1(SolveDay):
         return out
 
 
+Intervals = dict[str, list[int]]
+
+
 class SolveDay19x2(SolveDay19x1):
-    points: dict[str, list[int]]
 
     def solve(self, text_input: str) -> int:
-        self.parse_input(text_input).optimize_workflows().mark_axes()
+        self.parse_input(text_input).optimize_workflows()
         return self.calculate()
 
     def parse_line(self, line: str):
         if line and not line.startswith('{'):
             self.parse_workflow(line)
 
-    def mark_axes(self):
-        self.points = {
-            'x': [1, 4001], 'm': [1, 4001], 'a': [1, 4001], 's': [1, 4001]
-        }
-        for name in self.workflows:
-            rules = self.workflows[name][:-1]
-            for rule in rules:
-                _, axis, point, __ = rule
-                if point not in self.points[axis]:
-                    self.points[axis].append(point)
+    def calculate(self) -> int:
+        return self.calculate_workflow(
+            'in',
+            {'x': [1, 4001], 'm': [1, 4001], 'a': [1, 4001], 's': [1, 4001]}
+        )
 
-        for axis in self.points:
-            self.points[axis] = sorted(self.points[axis])
-        if self.verbose:
-            for axis in self.points:
-                print(axis + ':', self.points[axis])
-        return self
+    def calculate_workflow(self, name: str, xmas: Intervals) -> int:
+        if name == 'R' or is_degenerate(xmas):
+            return 0
 
-    def calculate(self):
-        xx = self.points['x']
-        mm = self.points['m']
-        aa = self.points['a']
-        ss = self.points['s']
-        total_iterations = (len(xx) - 1) * (len(mm) - 1) * (len(aa) - 1) * (len(ss) - 1)
-        if self.verbose:
-            print('total iterations', total_iterations)
-        iteration = 0
+        if name == 'A':
+            return hyper_volume(xmas)
 
-        result = 0
+        out = 0
+        remainder = xmas
 
-        for ix in range(len(xx) - 1):
-            for jm in range(len(mm) - 1):
-                for ka in range(len(aa) - 1):
-                    for ls in range(len(ss) - 1):
-                        iteration += 1
-                        x = xx[ix]
-                        m = mm[jm]
-                        a = aa[ka]
-                        s = ss[ls]
-                        is_valid = self.validate_part({'x': x, 'm': m, 'a': a, 's': s})
-                        value = 0
-                        if is_valid:
-                            value = (xx[ix + 1] - x) * (mm[jm + 1] - m) * (aa[ka + 1] - a) * (ss[ls + 1] - s)
-                            result += value
-                        if self.verbose:
-                            p = iteration * 100 / total_iterations
-                            sp = '{:.3f}% {}/{}'.format(p, iteration, total_iterations)
-                            print(sp, value)
-        return result
+        for rule in self.workflows[name]:
+            current, remainder = split_xmas(rule, remainder)
+            out += self.calculate_workflow(rule[-1], current)
+
+            if is_degenerate(remainder):
+                break
+
+        return out
+
+
+def split_xmas(rule: Rule, xmas: Intervals) -> tuple[Intervals, Intervals]:
+    if len(rule) == 2:
+        return xmas, xmas
+
+    current: Intervals = {}
+    remainder: Intervals = {}
+    cmp, axis, z, _ = rule
+
+    for ix in 'xmas':
+        x0, x1 = xmas[ix]
+        if ix == axis:
+            if cmp == '<':
+                current[ix] = [x0, z]
+                remainder[ix] = [z, x1]
+            else:
+                current[ix] = [z, x1]
+                remainder[ix] = [x0, z]
+        else:
+            current[ix] = [x0, x1]
+            remainder[ix] = [x0, x1]
+
+    return current, remainder
+
+
+def hyper_volume(xmas: Intervals) -> int:
+    volume = 1
+    for axis in xmas:
+        volume *= max(xmas[axis][1], xmas[axis][0]) - xmas[axis][0]
+
+    return volume
+
+
+def is_degenerate(xmas: Intervals) -> bool:
+    for axis in xmas:
+        if xmas[axis][1] <= xmas[axis][0]:
+            return True
+    return False
