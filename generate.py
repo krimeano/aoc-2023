@@ -41,6 +41,8 @@ with open('solution.py', 'w') as f:
         '\n\n\nclass SolveDay{0}x2(SolveDay{0}x1):'.format(new_day_str),
         '\n\n    def solve(self, text_input: str) -> int:',
         '\n        return 0',
+        '\n',
+
     ])
 
 with open('solution_test.py', 'w') as f:
@@ -52,6 +54,7 @@ with open('solution_test.py', 'w') as f:
         '\n    assert SolveDay{0}x1(True).solve(text_input) == 0'.format(new_day_str),
         '\n\n\ndef test_solution_2():',
         '\n    assert SolveDay{0}x2(True).solve(text_input) == 0'.format(new_day_str),
+        '\n',
     ])
 os.chdir(cwd)
 
