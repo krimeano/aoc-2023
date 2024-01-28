@@ -67,7 +67,6 @@ with open('solve.py', 'r') as f:
             x += 'from days.day{0}.solution import SolveDay{0}x1, SolveDay{0}x2\n'.format(new_day_str)
         if x == '    {0}: [SolveDay{1}x1, SolveDay{1}x2],\n'.format(last_day, last_day_str):
             x += '    {0}: [SolveDay{1}x1, SolveDay{1}x2],\n'.format(new_day, new_day_str)
-        x += '\n'
         main_content.append(x)
 
 with open('solve.py', 'w') as f:
