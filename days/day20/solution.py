@@ -144,26 +144,32 @@ class SolveDay20x1(SolveDay):
 
 
 class SolveDay20x2(SolveDay20x1):
-    machine_started = False
+    periods = {'zp': 0, 'bz': 0, 'dj': 0, 'nx': 0}
+    count_pushes = 0
+    periods_found = 0
 
     def solve(self, text_input: str) -> int:
-        self.machine_started = False
-        count_pushes = 0
+        self.count_pushes = 0
+        self.periods_found = 0
         self.reset()
         self.parse_input(text_input)
 
-        while not self.machine_started:
-            count_pushes += 1
-            if not count_pushes % 10 ** 6:
-                print('push number', count_pushes)
+        while self.periods_found < 4:
+            self.count_pushes += 1
+            if not self.count_pushes % 10 ** 6:
+                print('push number', self.count_pushes)
             self.push_button()
-        return count_pushes
+        result = 1
+        for ix in self.periods:
+            result *= self.periods[ix]
+        return result
 
     def send(self, signal: Signal):
         if self.verbose:
             print('SEND', signal)
 
-        if signal[-1] == 'rx' and not signal[0]:
-            self.machine_started = True
-
+        if signal[1] in self.periods and not signal[0]:
+            if not self.periods[signal[1]]:
+                self.periods[signal[1]] = self.count_pushes
+                self.periods_found += 1
         self.bus.append(signal)
