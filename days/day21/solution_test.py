@@ -24,6 +24,6 @@ def test_solution_2():
     assert SolveDay21x2(True).solve(text_input, 10) == 50
     assert SolveDay21x2(True).solve(text_input, 50) == 1594
     assert SolveDay21x2(True).solve(text_input, 100) == 6536
-    assert SolveDay21x2(True).solve(text_input, 500) == 167004
+    assert SolveDay21x2(False).solve(text_input, 500) == 167004
     assert SolveDay21x2(False).solve(text_input, 1000) == 668697
     assert SolveDay21x2(False).solve(text_input, 5000) == 16733044
