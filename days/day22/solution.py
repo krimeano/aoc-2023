@@ -57,9 +57,9 @@ class SolveDay22x1(SolveDay):
 
     def solve(self, text_input: str) -> int:
         self.bottom = {}
-        for x in range(10):
-            for y in range(10):
-                self.bottom[(x, y)] = (0, -1)
+        # for x in range(10):
+        #     for y in range(10):
+        #         self.bottom[(x, y)] = (0, -1)
 
         self.bricks = {}
         Brick.counter = 0
@@ -70,6 +70,9 @@ class SolveDay22x1(SolveDay):
             heights: dict[int, list[tuple[int, int]]] = {}
             h_max = 0
             for xy in brick.spur():
+                if xy not in self.bottom:
+                    self.bottom[xy] = (0, -1)
+
                 h = self.bottom[xy][0]
 
                 if h < h_max:
@@ -91,15 +94,19 @@ class SolveDay22x1(SolveDay):
                 if ix >= 0:
                     self.bricks[ix].support_me(brick)
 
-            z = h_max + 1
-            brick.position[2] = z
+            z0 = h_max + 1
+            brick.position[2] = z0
             for xy in brick.spur():
+                z = z0
+                if brick.direction[2] > 0:
+                    z += brick.direction[2]
                 self.bottom[xy] = (z, brick.ix)
 
             if self.verbose:
                 brick.debug()
                 print()
-
+        if self.verbose:
+            print(self.bottom)
         result = 0
         for ix in self.bricks:
             brick = self.bricks[ix]
