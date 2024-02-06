@@ -12,6 +12,7 @@ class Brick:
         self.ix = Brick.counter
         self.supporting = set()
         self.supported_by = set()
+        self.moved = False
         Brick.counter += 1
         edges = [parse_coords(x) for x in txt.split('~')]
         dd = [edges[1][ix] - edges[0][ix] for ix in range(len(edges[0]))]
@@ -56,14 +57,25 @@ class SolveDay22x1(SolveDay):
     bottom: dict[tuple[int, int], tuple[int, int]]  # {(x, y): (z, brick.ix)}
 
     def solve(self, text_input: str) -> int:
-        self.bottom = {}
-        # for x in range(10):
-        #     for y in range(10):
-        #         self.bottom[(x, y)] = (0, -1)
+        self.handle_snapshot(self.get_lines(text_input))
+        result = 0
+        for ix in self.bricks:
+            brick = self.bricks[ix]
+            if self.verbose:
+                brick.debug()
+            can_be_removed = self.can_be_removed(brick)
+            if self.verbose:
+                print('   ', brick.supporting, brick.supported_by, can_be_removed)
+            if can_be_removed:
+                result += 1
 
+        return result
+
+    def handle_snapshot(self, snapshot: list[str]):
+        self.bottom = {}
         self.bricks = {}
         Brick.counter = 0
-        for brick in sorted(Brick(x) for x in self.get_lines(text_input)):
+        for brick in sorted(Brick(x) for x in snapshot):
             self.bricks[brick.ix] = brick
             if self.verbose:
                 brick.debug()
@@ -107,18 +119,6 @@ class SolveDay22x1(SolveDay):
                 print()
         if self.verbose:
             print(self.bottom)
-        result = 0
-        for ix in self.bricks:
-            brick = self.bricks[ix]
-            if self.verbose:
-                brick.debug()
-            can_be_removed = self.can_be_removed(brick)
-            if self.verbose:
-                print('   ', brick.supporting, brick.supported_by, can_be_removed)
-            if can_be_removed:
-                result += 1
-
-        return result
 
     def can_be_removed(self, brick):
         for ix in brick.supporting:
@@ -129,6 +129,28 @@ class SolveDay22x1(SolveDay):
 
 
 class SolveDay22x2(SolveDay22x1):
-
     def solve(self, text_input: str) -> int:
-        return 0
+        self.handle_snapshot(self.get_lines(text_input))
+        return sum(self.move(self.bricks[ix]) for ix in self.bricks)
+
+    def move(self, start: Brick) -> int:
+        for ix in self.bricks:
+            self.bricks[ix].moved = False
+
+        start.moved = True
+
+        just_moved = [start]
+        while just_moved:
+            current = just_moved.pop()
+
+            for ix in current.supporting:
+                other = self.bricks[ix]
+
+                for jy in other.supported_by:
+                    if not self.bricks[jy].moved:
+                        break
+                else:
+                    other.moved = True
+                    just_moved.append(other)
+
+        return sum(1 for ix in self.bricks if self.bricks[ix].moved) - 1
